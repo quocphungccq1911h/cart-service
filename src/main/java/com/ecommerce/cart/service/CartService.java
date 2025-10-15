@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -29,19 +30,9 @@ public class CartService {
         Cart cart = getCart(userId);
         cart.setUserId(userId);
 
-        Optional<CartItem> existsItemOpt = cart.getItems()
-                .stream()
-                .filter(x -> Objects.equals(x.getProductId(), item.getProductId()))
-                .findFirst();
+        cart.addItem(item);
 
-        if (existsItemOpt.isPresent()) {
-            // Đã tồn tại -> tăng số lượng
-            CartItem existingItem = existsItemOpt.get();
-            existingItem.setQuantity(existingItem.getQuantity() + item.getQuantity());
-        } else {
-            cart.addItem(item);
-        }
-        redisTemplate.opsForValue().set(getKey(userId), cart);
+        redisTemplate.opsForValue().set(getKey(userId), cart, 7, TimeUnit.DAYS);
         return cart;
     }
 

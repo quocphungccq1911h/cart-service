@@ -1,5 +1,7 @@
 package com.ecommerce.cart.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,6 +14,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CartItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -26,7 +29,6 @@ public class CartItem implements Serializable {
     public void increaseQuantity(int amount) {
         this.quantity += amount;
     }
-
     public BigDecimal getTotalPrice() {
         return price.multiply(BigDecimal.valueOf(quantity));
     }

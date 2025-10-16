@@ -1,5 +1,6 @@
 package com.ecommerce.cart.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.util.Objects;
 
 @Data
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Cart implements Serializable {
     private static final long serialVersionUID = 1L;
     private String userId;
@@ -39,13 +41,11 @@ public class Cart implements Serializable {
     public void clear() {
         items.clear();
     }
-
     public int getTotalQuantity() {
         return items.stream()
                 .mapToInt(CartItem::getQuantity)
                 .sum();
     }
-
     public BigDecimal getTotalAmount() {
         return items.stream()
                 .map(CartItem::getTotalPrice)

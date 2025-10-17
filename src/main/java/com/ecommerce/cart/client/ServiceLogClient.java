@@ -14,7 +14,7 @@ public class ServiceLogClient {
         this.webClient = builder.baseUrl("http://localhost:8083/api/logs").build();
     }
 
-    public void senLog(String level, String message, Map<String, Object> metadata) {
+    public void sendLog(String level, String message, Map<String, Object> metadata) {
         try {
             webClient.post()
                     .bodyValue(Map.of(
